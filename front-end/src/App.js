@@ -25,8 +25,9 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Persons</h2>
+      <h2>Add a Person</h2>
       <NewPerson addPerson={null}/>
+      <h2>Existing Persons</h2>
       <PersonsTable persons={persons}/>
     </div>
   );
