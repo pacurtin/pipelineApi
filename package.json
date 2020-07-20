@@ -1,0 +1,14 @@
+{
+  "name": "pipelineapi",
+  "version": "1.0.0",
+  "description": "Create and update a person",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Paddy",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
