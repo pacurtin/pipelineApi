@@ -22,26 +22,38 @@ const useStyles = makeStyles({
 function PersonsTable(props) {
   const classes = useStyles();
   const {persons} = props;
+
+
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Phone</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {persons.map((person) => (
-            <TableRow key={person.email}>
-              <TableCell>{person.name}</TableCell>
-              <TableCell>{person.email}</TableCell>
-              <TableCell>{person.phone}</TableCell>
+      {
+        persons &&
+        persons.length<1 &&
+        <p>No persons found. Try refreshing the page or adding a new person.</p>
+      }
+      {
+        persons &&
+        Array.isArray(persons) &&
+        persons.length>0 &&
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Phone</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {persons.map((person) => (
+              <TableRow key={person.id}>
+                <TableCell>{person.name}</TableCell>
+                <TableCell>{person.email[0].value}</TableCell>
+                <TableCell>{person.phone[0].value}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      }
     </TableContainer>
   );
 }

@@ -1,23 +1,32 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PersonsTable from "./PersonsTable";
+import NewPerson from "./NewPerson";
+import {errorHandler, getPersons} from "./apiCalls";
+
 /*
     Basic frontend to allow adding person in the pipeline API
  */
-
 function App() {
 
-  function createData(name, email, phone) {
-    return { name, email, phone };
-  }
+  const [persons,setPersons] = useState([]);
 
-  const persons = [
-    createData('Jimmy', "Jim@gmail.com", "5041234567"),
-    createData('John', "John@gmail.com", "5047654321"),
-    createData('Reginald', "Reginald@gmail.com", "5041234123")
-  ];
+  // useEffect with no dependencies will only run once
+  useEffect(() =>
+    {
+      getPersons()
+        .then((response) => {
+          setPersons(response.data.data);
+        })
+        .catch((error) => {
+          errorHandler(error);
+        });
+    }, []
+  );
 
   return (
     <div className="App">
+      <h2>Persons</h2>
+      <NewPerson addPerson={null}/>
       <PersonsTable persons={persons}/>
     </div>
   );
