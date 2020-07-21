@@ -7,6 +7,8 @@ const axiosRetry = require('axios-retry');
 const axios = _axios.create();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
+const path = require('path');
+
 
 // https://github.com/softonic/axios-retry/issues/87
 const retryDelay = (retryNumber = 0) => {
@@ -28,7 +30,7 @@ const API = process.env.API_URL;
 const KEY = process.env.API_KEY;
 
 
-app.get('/', (req, res) => res.send('Hello World! Server running.'));
+app.use('/', express.static(path.join(__dirname, 'front-end/build')));
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
 

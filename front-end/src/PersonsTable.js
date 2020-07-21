@@ -22,17 +22,23 @@ const useStyles = makeStyles({
 
 function PersonsTable(props) {
   const classes = useStyles();
-  const {persons, openEditModal} = props;
+  const {persons, openEditModal, loading} = props;
 
 
   return (
     <TableContainer component={Paper}>
       {
-        persons &&
-        persons.length<1 &&
-        <p>No persons found. Try refreshing the page or adding a new person.</p>
+        loading &&
+        <p>Loading...</p>
       }
       {
+        !loading &&
+        persons &&
+        persons.length<1 &&
+        <p>No persons found. Wait a moment and then try refreshing the page or adding a new person.</p>
+      }
+      {
+        !loading &&
         persons &&
         Array.isArray(persons) &&
         persons.length>0 &&

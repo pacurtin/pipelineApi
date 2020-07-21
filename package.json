@@ -4,7 +4,8 @@
   "description": "Create and update a person",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "cd front-end && npm run-script build && cd .. && npm run-script start-server",
+    "start-server": "node server.js"
   },
   "author": "Paddy",
   "license": "ISC",

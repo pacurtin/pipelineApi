@@ -14,6 +14,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 function App() {
 
   const [persons,setPersons] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [snackOpen,setSnackOpen] = useState(false);
   const [message,setMessage] = useState('');
   const [severity,setSeverity] = useState('error');
@@ -29,9 +30,11 @@ function App() {
       getPersons()
         .then((response) => {
           setPersons(response.data.data);
+          setLoading(false);
         })
         .catch((error) => {
           errorHandler(error);
+          setLoading(false);
           displayMessage('Failed to retrieve Persons data. Try refreshing the page.', 'error');
         });
     }, []
@@ -119,17 +122,19 @@ function App() {
       <h2>Add a Person</h2>
       <PersonForm
         onSubmit={newPerson}
-        name={name}
+        name={editDialogOpen?'':name}
         setName={setName}
-        email={email}
+        email={editDialogOpen?'':email}
         setEmail={setEmail}
-        phone={phone}
+        phone={editDialogOpen?'':phone}
         setPhone={setPhone}
       />
       <h2>Existing Persons</h2>
       <PersonsTable
         persons={persons}
-        openEditModal={openEditDialog}/>
+        openEditModal={openEditDialog}
+        loading={loading}
+      />
       <Snackbar
         anchorOrigin={{'vertical':'top', 'horizontal':'right'}}
         open={snackOpen}
