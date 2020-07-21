@@ -22,6 +22,9 @@ function PersonForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(name,email,phone);
+    setName('');
+    setEmail('');
+    setPhone('');
   };
 
   return (
