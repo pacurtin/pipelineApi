@@ -40,3 +40,13 @@ export function addPerson(name,email,phone) {
     phone: phone
   });
 }
+
+// edit existing person
+export function editPerson(id,name,email,phone) {
+  return axios.post("/persons", {
+    id: id,
+    name: name,
+    email: email,
+    phone: phone
+  });
+}

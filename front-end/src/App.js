@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import PersonsTable from "./PersonsTable";
 import PersonForm from "./PersonForm";
-import {addPerson, errorHandler, getPersons} from "./apiCalls";
+import {addPerson, editPerson, errorHandler, getPersons} from "./apiCalls";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 
 /*
@@ -12,10 +14,14 @@ import MuiAlert from '@material-ui/lab/Alert';
 function App() {
 
   const [persons,setPersons] = useState([]);
-  const [open,setOpen] = useState(false);
+  const [snackOpen,setSnackOpen] = useState(false);
   const [message,setMessage] = useState('');
   const [severity,setSeverity] = useState('error');
-
+  const [editDialogOpen,setEditDialogOpen] = useState(false);
+  const [id, setId] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
 
   // useEffect with no dependencies will only run once
   useEffect(() =>
@@ -26,6 +32,7 @@ function App() {
         })
         .catch((error) => {
           errorHandler(error);
+          displayMessage('Failed to retrieve Persons data. Try refreshing the page.', 'error');
         });
     }, []
   );
@@ -35,28 +42,44 @@ function App() {
   }
 
   const handleSnackClose = () => {
-    setOpen(false);
+    setSnackOpen(false);
   };
 
   const displayMessage = (newMessage, newSeverity) => {
     if(newMessage && newSeverity){
       setMessage(newMessage);
       setSeverity(newSeverity);
-      setOpen(true);
+      setSnackOpen(true);
     }
   };
 
-  function updateTable(newPerson) {
+  function addPersonToTable(newPerson) {
     setPersons(prevState => {
       return prevState.concat(newPerson);
     })
   }
 
-  function newPerson(name,email,phone){
+  function editPersonInTable(changedPerson) {
+    setPersons(prevState => {
+      return prevState.map( existingPerson => {
+        return existingPerson.id===changedPerson.id ? changedPerson : existingPerson
+      });
+    })
+  }
+
+  function clearFormData(){
+    setId('');
+    setName('');
+    setPhone('');
+    setEmail('');
+  }
+
+  function newPerson(){
     addPerson(name,email,phone)
       .then((response) => {
-        updateTable(response.data.data);
+        addPersonToTable(response.data.data);
         displayMessage('Person added successfully.', 'success');
+        clearFormData();
       })
       .catch((error) => {
         errorHandler(error);
@@ -64,15 +87,51 @@ function App() {
       });
   }
 
+  function changePerson(){
+    editPerson(id,name,email,phone)
+      .then((response) => {
+        editPersonInTable(response.data.data);
+        displayMessage('Person edited successfully.', 'success');
+        clearFormData();
+      })
+      .catch((error) => {
+        errorHandler(error);
+        displayMessage('Failed to edit person. Please try again', 'error');
+      });
+  }
+
+  const openEditDialog = (id, name, email, phone) => {
+    setId(id);
+    setName(name);
+    setPhone(phone);
+    setEmail(email);
+    setEditDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    clearFormData();
+    setEditDialogOpen(false);
+  };
+
   return (
     <div className="App">
       <h2>Add a Person</h2>
-      <PersonForm onSubmit={newPerson}/>
+      <PersonForm
+        onSubmit={newPerson}
+        name={name}
+        setName={setName}
+        email={email}
+        setEmail={setEmail}
+        phone={phone}
+        setPhone={setPhone}
+      />
       <h2>Existing Persons</h2>
-      <PersonsTable persons={persons}/>
+      <PersonsTable
+        persons={persons}
+        openEditModal={openEditDialog}/>
       <Snackbar
         anchorOrigin={{'vertical':'top', 'horizontal':'right'}}
-        open={open}
+        open={snackOpen}
         autoHideDuration={5000}
         onClose={handleSnackClose}>
         <Alert
@@ -81,6 +140,21 @@ function App() {
           {message}
         </Alert>
       </Snackbar>
+      <Dialog
+        onClose={handleDialogClose}
+        aria-labelledby="edit-person"
+        open={editDialogOpen}>
+        <DialogTitle id="edit-person">Edit Person</DialogTitle>
+        <PersonForm
+          onSubmit={changePerson}
+          name={name}
+          setName={setName}
+          email={email}
+          setEmail={setEmail}
+          phone={phone}
+          setPhone={setPhone}
+        />
+      </Dialog>
     </div>
   );
 }

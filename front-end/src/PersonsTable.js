@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
   root: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles({
 
 function PersonsTable(props) {
   const classes = useStyles();
-  const {persons} = props;
+  const {persons, openEditModal} = props;
 
 
   return (
@@ -41,6 +42,7 @@ function PersonsTable(props) {
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -49,6 +51,23 @@ function PersonsTable(props) {
                 <TableCell>{person.name}</TableCell>
                 <TableCell>{person.email[0].value}</TableCell>
                 <TableCell>{person.phone[0].value}</TableCell>
+                <TableCell>
+                  <Button
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                    onClick={
+                      ()=> openEditModal(
+                        person.id,
+                        person.name,
+                        person.email[0].value,
+                        person.phone[0].value
+                      )
+                    }
+                    >
+                    Edit
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

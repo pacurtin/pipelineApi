@@ -1,11 +1,22 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignContent: 'center',
+    '@media (min-width:780px)':{
+      flexDirection: 'row',
+    },
     '& > *': {
+      alignSelf:'center',
+      '@media (min-width:780px)':{
+        alignSelf:'baseline',
+      },
       margin: theme.spacing(1),
       width: '25ch',
     },
@@ -13,18 +24,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function PersonForm(props) {
-  const {onSubmit} = props;
+  const {
+    onSubmit,
+    name,
+    setName,
+    email,
+    setEmail,
+    phone,
+    setPhone
+  } = props;
   const classes = useStyles();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(name,email,phone);
-    setName('');
-    setEmail('');
-    setPhone('');
   };
 
   return (
