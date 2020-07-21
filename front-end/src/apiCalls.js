@@ -31,3 +31,12 @@ export function errorHandler(error) {
 export function getPersons() {
   return axios.get("/persons");
 }
+
+// add a new person
+export function addPerson(name,email,phone) {
+  return axios.post("/persons", {
+    name: name,
+    email: email,
+    phone: phone
+  });
+}

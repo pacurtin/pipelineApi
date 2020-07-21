@@ -5,6 +5,8 @@ dotenv.config();
 const _axios = require('axios');
 const axiosRetry = require('axios-retry');
 const axios = _axios.create();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
 // https://github.com/softonic/axios-retry/issues/87
 const retryDelay = (retryNumber = 0) => {
@@ -44,7 +46,16 @@ app.get('/persons', function(req,res) {
 
 // add new person
 app.post('/persons', function(req,res) {
-  //TODO
+  axios.post(API+'/persons?api_token='+KEY, {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone
+  }).then(response=>{
+    res.send(response.data);
+  })
+  .catch(err=>{
+    console.error(err);
+  });
 });
 
 // update person details

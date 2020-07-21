@@ -12,8 +12,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NewPerson(props) {
-  const {addPerson} = props;
+function PersonForm(props) {
+  const {onSubmit} = props;
   const classes = useStyles();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -21,8 +21,7 @@ function NewPerson(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    debugger;
-    console.log("Well");
+    onSubmit(name,email,phone);
   };
 
   return (
@@ -51,4 +50,4 @@ function NewPerson(props) {
   );
 }
 
-export default NewPerson;
+export default PersonForm;
