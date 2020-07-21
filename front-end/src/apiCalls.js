@@ -43,7 +43,7 @@ export function addPerson(name,email,phone) {
 
 // edit existing person
 export function editPerson(id,name,email,phone) {
-  return axios.post("/persons", {
+  return axios.put("/persons", {
     id: id,
     name: name,
     email: email,

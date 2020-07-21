@@ -60,5 +60,14 @@ app.post('/persons', function(req,res) {
 
 // update person details
 app.put('/persons', function(req,res) {
-  //TODO
+  axios.put(API+'/persons/'+req.body.id+'?api_token='+KEY, {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone
+  }).then(response=>{
+    res.send(response.data);
+  })
+    .catch(err=>{
+      console.error(err);
+    });
 });

@@ -72,6 +72,7 @@ function App() {
     setName('');
     setPhone('');
     setEmail('');
+    setEditDialogOpen(false);
   }
 
   function newPerson(){
