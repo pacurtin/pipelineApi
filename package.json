@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "cd front-end && npm run-script build && cd .. && npm run-script start-server",
-    "start-server": "node server.js"
+    "start-server": "node server.js",
+    "docker-build": "docker-compose build",
+    "docker-up": "docker-compose up"
   },
   "author": "Paddy",
   "license": "ISC",
