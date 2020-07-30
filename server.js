@@ -9,6 +9,21 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const path = require('path');
 
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/test";
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  console.log("Database created!");
+  const dbo = db.db("test");
+
+  dbo.collection("customers").find({}).toArray(function(err, result) {
+    if (err) throw err;
+    console.log(result[0].name);
+    db.close();
+  });
+});
+
 
 // https://github.com/softonic/axios-retry/issues/87
 const retryDelay = (retryNumber = 0) => {
